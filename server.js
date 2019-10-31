@@ -1,5 +1,11 @@
+const bodyParser = require('body-parser');
 const app = require('./app');
 
-const port = process.env.PORT || 2500;
+const users = require('./routes/user.route');
 
+
+app.use(bodyParser.json());
+app.use('/v1/auth/create-user', users);
+
+const port = process.env.PORT || 2500;
 app.listen(port, console.log(`Listening to port ${port}...`));
