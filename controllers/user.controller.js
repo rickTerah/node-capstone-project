@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const randomId = require('../starters/identity');
 require('../models/db/user')();
 const db = require('../models/db/index');
-const { validate } = require('../validates/user.validate');
+const { validate } = require('../models/validates/user.validate');
 
 class UserController {
   static async createUserAccount(req, res) {
