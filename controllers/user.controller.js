@@ -3,11 +3,12 @@ const bcrypt = require('bcrypt');
 const randomId = require('../starters/identity');
 require('../models/db/user')();
 const db = require('../models/db/index');
-const { validate } = require('../models/validates/user.validate');
+const { validateSignup } = require('../models/validates/userSignup.validate');
+const { validateLogin } = require('../models/validates/userLogin.validate');
 
 class UserController {
   static async createUserAccount(req, res) {
-    const { error } = validate(req.body);
+    const { error } = validateSignup(req.body);
     if (error) {
       return res.status(400).json({
         status: 'error',
@@ -40,6 +41,33 @@ class UserController {
       },
     });
   }
+
+  static async loginUser(req, res) {
+    const { error } = validateLogin(req.body);
+    if (error) {
+      return res.status(400).json({
+        status: 'error',
+        error: error.details[0].message,
+      });
+    }
+
+    const { email, password } = req.body;
+    const user = await db.query('SELECT * FROM users WHERE email = $1', [email]);
+    if (user.rows.length === 0) return res.status(400).send('Invalid email or password');
+
+    const validPassword = await bcrypt.compare(password, user.rows[0].password);
+    if (!validPassword) return res.status(400).send('Invalid email or password');
+
+    const token = jwt.sign({ userId: user.userId, isAdmin: user.isAdmin, email: user.email }, 'jwtPrivateKey');
+    return res.status(201).json({
+      status: 'sucess',
+      data: {
+        token,
+        userId: user.rows[0].userid,
+      },
+    });
+  }
+
 }
 
 module.exports = UserController;
