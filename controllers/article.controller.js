@@ -28,9 +28,11 @@ class ArticleController {
       });
     }
 
+    const createdBy = req.user.email;
+
     await db.query(
-      `INSERT INTO articles (articleId, title, article, createdOn, categoryId) 
-        VALUES ($1, $2, $3, $4, $5)`, [articleId, title, article, createdOn, categoryId],
+      `INSERT INTO articles (articleId, title, article, createdOn, categoryId, createdBy) 
+        VALUES ($1, $2, $3, $4, $5, $6)`, [articleId, title, article, createdOn, categoryId, createdBy],
     );
     return res.status(201).json({
       status: 'sucess',
@@ -39,6 +41,7 @@ class ArticleController {
         articleId,
         createdOn,
         title,
+        createdBy,
       },
     });
   }
