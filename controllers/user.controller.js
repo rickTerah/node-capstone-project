@@ -25,13 +25,27 @@ class UserController {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    const user = await db.query(
+    let user = await db.query('SELECT * FROM users WHERE email=$1', [email]);
+    if (user.rowCount > 0) {
+      return res.status(400).json({
+        status: 'error',
+        data: {
+          message: 'User already registered',
+        },
+      });
+    }
+
+    user = await db.query(
       `INSERT INTO users (userId, firstName, lastName, email, password, gender, jobRole, department, address, isAdmin) 
         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
       [identity, firstName, lastName, email, hashedPassword, gender, jobRole, department, address, isAdmin],
     );
 
-    const token = jwt.sign({ userId: user.userId, isAdmin: user.isAdmin, email: user.email }, 'jwtPrivateKey');
+    const token = jwt.sign({
+      userId: identity,
+      isAdmin,
+      email,
+    }, 'jwtPrivateKey');
     return res.status(201).json({
       status: 'sucess',
       data: {
@@ -58,7 +72,11 @@ class UserController {
     const validPassword = await bcrypt.compare(password, user.rows[0].password);
     if (!validPassword) return res.status(400).send('Invalid email or password');
 
-    const token = jwt.sign({ userId: user.userId, isAdmin: user.isAdmin, email: user.email }, 'jwtPrivateKey');
+    const token = jwt.sign({
+      userId: user.rows[0].userid,
+      isAdmin: user.rows[0].isadmin,
+      email: user.rows[0].email,
+    }, 'jwtPrivateKey');
     return res.status(201).json({
       status: 'sucess',
       data: {
@@ -67,7 +85,6 @@ class UserController {
       },
     });
   }
-
 }
 
 module.exports = UserController;
