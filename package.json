@@ -25,9 +25,11 @@
     "@hapi/joi": "^16.1.7",
     "bcrypt": "^3.0.6",
     "body-parser": "^1.19.0",
+    "cloudinary": "^1.16.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
+    "express-fileupload": "^1.1.6-alpha.6",
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.9.1",
     "pg": "^7.12.1"
