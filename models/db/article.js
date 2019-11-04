@@ -8,7 +8,8 @@ module.exports = () => {
                                 title VARCHAR (50) NOT NULL,
                                 article VARCHAR (2500) NOT NULL,
                                 createdOn timestamp with time zone NOT NULL,
-                                categoryId INTEGER NOT NULL
+                                categoryId INTEGER NOT NULL,
+                                createdBy VARCHAR (50) NOT NULL
                                 )`);
     } catch (error) {
       console.log(error);
