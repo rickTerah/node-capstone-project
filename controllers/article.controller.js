@@ -1,7 +1,7 @@
 require('../models/db/article')();
 const db = require('../models/db/index');
 const generateId = require('../starters/identity');
-const { validatePost } = require('../models/validates/article.validate');
+const { validatePost, validateEdit } = require('../models/validates/article.validate');
 
 const today = new Date();
 const date = `${today.getFullYear()}-${(today.getMonth() + 1)}-${+today.getDate()}`;
@@ -41,7 +41,38 @@ class ArticleController {
         articleId,
         createdOn,
         title,
-        createdBy,
+      },
+    });
+  }
+
+  static async updateSingleArticle(req, res) {
+    const { error } = validateEdit(req.body);
+    if (error) return res.status(400).json({ message: error.details[0].message });
+
+    const { articleId } = req.params;
+
+    const owner = await db.query(`SELECT * FROM articles WHERE articleId = ${articleId}`);
+    if (owner.rowCount === 0) return res.status(404).json({ message: 'Article Not Found' });
+    if (owner.rows[0].createdby !== req.user.email) {
+      return res.status(403).json({
+        status: 'error',
+        message: 'You cannot edit this article',
+      });
+    }
+    const { title, article } = req.body;
+    await db.query(
+      `UPDATE articles
+        SET title = $1, article = $2
+        WHERE articleId = ${articleId}`,
+      [title, article],
+    );
+
+    return res.status(201).json({
+      status: 'success',
+      data: {
+        message: 'Article successfully updated',
+        title,
+        article,
       },
     });
   }
