@@ -6,5 +6,6 @@ const auth = require('../middlewares/auth');
 
 
 router.post('/', auth, ArticleController.createSingleArticle);
+router.patch('/:articleId', auth, ArticleController.updateSingleArticle);
 
 module.exports = router;
