@@ -76,6 +76,27 @@ class ArticleController {
       },
     });
   }
+
+  static async deleteSingleArticle(req, res) {
+    const { articleId } = req.params;
+
+    const owner = await db.query(`SELECT * FROM articles WHERE articleId = ${articleId}`);
+    if (owner.rowCount === 0) return res.status(404).json({ message: 'Article Not Found' });
+    if (owner.rows[0].createdby !== req.user.email) {
+      return res.status(403).json({
+        status: 'error',
+        message: 'You cannot delete this article',
+      });
+    }
+
+    await db.query(`DELETE FROM articles WHERE articleId = ${articleId}`);
+    return res.status(202).json({
+      status: 'success',
+      data: {
+        message: 'Article succesfully deleted',
+      },
+    });
+  }
 }
 
 
