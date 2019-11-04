@@ -14,20 +14,22 @@ cloudinary.config({
 class GifController {
   static async postGif(req, res) {
     const file = req.files.image;
-    if (!file) return res.status(200).json({message: 'Image is required'});
+    if (!file) return res.status(200).json({ message: 'Image is required' });
 
     const { title } = req.body;
-    if (!title) return res.status(400).json({message: 'title is required'});
+    if (!title) return res.status(400).json({ message: 'title is required' });
 
     const gifcloud = await cloudinary.v2.uploader.upload(file.tempFilePath);
     const { secure_url: secureUrl, created_at: createdOn, public_id: publicId } = gifcloud;
 
     const identity = generateId(100000);
 
+    const createdBy = req.user.email;
 
     await db.query(
-      `INSERT INTO gifs (gifId, title, imageUrl, createdOn, publicId) 
-        VALUES ($1, $2, $3, $4, $5)`, [identity, title, secureUrl, createdOn, publicId]
+      `INSERT INTO gifs (gifId, title, imageUrl, createdOn, publicId, createdBy) 
+        VALUES ($1, $2, $3, $4, $5, $6)`,
+      [identity, title, secureUrl, createdOn, publicId, createdBy],
     );
     return res.status(201).json({
       status: 'sucess',
@@ -37,6 +39,7 @@ class GifController {
         createdOn,
         title,
         imageUrl: secureUrl,
+        createdBy,
       },
     });
   }
