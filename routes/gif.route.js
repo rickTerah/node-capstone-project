@@ -12,6 +12,7 @@ router.use(fileUpload({
 
 
 router.post('/', auth, GifController.postGif);
+router.get('/', auth, GifController.getAllgifs);
 router.delete('/:gifId', auth, GifController.deleteGif);
 router.post('/:gifId/comment', auth, GifCommentController.writeComment);
 
