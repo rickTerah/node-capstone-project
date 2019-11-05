@@ -120,6 +120,21 @@ class ArticleController {
       data: article.rows[0],
     });
   }
+
+  static async getArticlesInCategory(req, res) {
+    const { categoryId } = req.params;
+    const article = await db.query(`SELECT * FROM articles WHERE categoryId = ${categoryId}`);
+    if (article.rows.length === 0) {
+      return res.status(404).json({
+        status: 'error',
+        error: 'No articles in the specified Category',
+      });
+    }
+    return res.status(200).json({
+      status: 'success',
+      data: article.rows,
+    });
+  }
 }
 
 
