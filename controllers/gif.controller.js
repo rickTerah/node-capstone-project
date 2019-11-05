@@ -74,6 +74,14 @@ class GifController {
       },
     });
   }
+
+  static async getAllgifs(req, res) {
+    const gifs = await db.query('SELECT * FROM gifs ORDER BY createdOn DESC');
+    res.status(200).json({
+      status: 'Success',
+      data: gifs.rows,
+    });
+  }
 }
 
 
