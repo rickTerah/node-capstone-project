@@ -11,5 +11,6 @@ router.use(fileUpload({
 
 
 router.post('/', auth, GifController.postGif);
+router.delete('/:gifId', auth, GifController.deleteGif);
 
 module.exports = router;
