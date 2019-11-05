@@ -43,6 +43,37 @@ class GifController {
       },
     });
   }
+
+  static async deleteGif(req, res) {
+    const { gifId } = req.params;
+
+    const gif = await db.query(`SELECT * FROM gifs WHERE gifId = ${gifId}`);
+    if (gif.rows.length === 0) {
+      return res.status(404).json({
+        status: 'error',
+        error: 'gif with the specified gifId NOT found',
+      });
+    }
+
+    if (gif.rows[0].createdby !== req.user.email) {
+      return res.status(403).json({
+        status: 'error',
+        message: 'You cannot delete this Gif',
+      });
+    }
+
+    await cloudinary.v2.uploader.destroy(gif.rows[0].publicid);
+
+
+    await db.query(`DELETE FROM gifs WHERE gifId = ${gifId}`);
+    if (gif.rowCount === 0) return res.status(404).json({ message: 'Gif Not Found' });
+    return res.status(202).json({
+      status: 'success',
+      data: {
+        message: 'Gif post successfully deleted',
+      },
+    });
+  }
 }
 
 
