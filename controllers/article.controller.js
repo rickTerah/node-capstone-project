@@ -105,6 +105,21 @@ class ArticleController {
       data: articles.rows,
     });
   }
+
+  static async getSingleArticle(req, res) {
+    const { articleId } = req.params;
+    const article = await db.query(`SELECT * FROM articles WHERE articleId = ${articleId}`);
+    if (article.rows.length === 0) {
+      return res.status(404).json({
+        status: 'error',
+        error: 'Article with the specified articleId NOT found',
+      });
+    }
+    return res.status(200).json({
+      status: 'success',
+      data: article.rows[0],
+    });
+  }
 }
 
 
