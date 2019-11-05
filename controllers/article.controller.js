@@ -97,6 +97,14 @@ class ArticleController {
       },
     });
   }
+
+  static async getAllArticles(req, res) {
+    const articles = await db.query('SELECT * FROM articles ORDER BY createdOn DESC');
+    return res.status(200).json({
+      status: 'Success',
+      data: articles.rows,
+    });
+  }
 }
 
 
