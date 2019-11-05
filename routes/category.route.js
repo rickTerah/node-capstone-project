@@ -1,5 +1,6 @@
 const express = require('express');
 const CategoryController = require('../controllers/category.controller');
+const ArticleController = require('../controllers/article.controller');
 const auth = require('../middlewares/auth');
 const admin = require('../middlewares/admin');
 
@@ -10,5 +11,7 @@ router.get('/:id', auth, admin, CategoryController.getSingleCategory);
 router.post('/', auth, admin, CategoryController.createSingleCategory);
 router.patch('/:id', auth, admin, CategoryController.updateSingleCategory);
 router.delete('/:id', auth, admin, CategoryController.deleteSingleCategory);
+
+router.get('/:categoryId/articles', auth, ArticleController.getArticlesInCategory);
 
 module.exports = router;
