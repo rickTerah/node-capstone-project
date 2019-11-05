@@ -82,6 +82,21 @@ class GifController {
       data: gifs.rows,
     });
   }
+
+  static async getSingleGif(req, res) {
+    const { gifId } = req.params;
+    const gif = await db.query(`SELECT * FROM gifs WHERE gifId = ${gifId}`);
+    if (gif.rows.length === 0) {
+      return res.status(404).json({
+        status: 'error',
+        error: 'Gif with the specified gifId NOT found',
+      });
+    }
+    return res.status(200).json({
+      status: 'success',
+      data: gif.rows[0],
+    });
+  }
 }
 
 
