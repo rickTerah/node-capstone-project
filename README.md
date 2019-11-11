@@ -1,5 +1,7 @@
 # node-capstone-project
- Internal social network for employees of an organization
+[![Build Status](https://travis-ci.org/Terahpatrick/node-capstone-project.svg?branch=master)](https://travis-ci.org/Terahpatrick/node-capstone-project) [![Coverage Status](https://coveralls.io/repos/github/Terahpatrick/node-capstone-project/badge.svg?branch=master)](https://coveralls.io/github/Terahpatrick/node-capstone-project?branch=master) [![Maintainability](https://api.codeclimate.com/v1/badges/b02806a5bae97ca7e939/maintainability)](https://codeclimate.com/github/Terahpatrick/node-pg/maintainability)
+
+Internal social network for employees of an organization
 
 #### users endpoints
 | Action| Endpoint | Functionality | 
