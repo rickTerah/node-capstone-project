@@ -1,5 +1,7 @@
 const bodyParser = require('body-parser');
-const app = require('./app');
+const express = require('express');
+
+const app = express();
 
 const users = require('./routes/user.route');
 const gifs = require('./routes/gif.route');
@@ -8,10 +10,12 @@ const articles = require('./routes/article.route');
 
 
 app.use(bodyParser.json());
-app.use('/v1/auth', users);
-app.use('/v1/gifs', gifs);
-app.use('/v1/categories', categories);
-app.use('/v1/articles', articles);
+app.use('/auth', users);
+app.use('/gifs', gifs);
+app.use('/categories', categories);
+app.use('/articles', articles);
 
 const port = process.env.PORT || 2500;
-app.listen(port, console.log(`Listening to port ${port}...`));
+const server = app.listen(port, console.log(`Listening to port ${port}...`));
+
+module.exports = server;
