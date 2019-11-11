@@ -6,12 +6,12 @@ const admin = require('../middlewares/admin');
 
 const router = express.Router();
 
-router.get('/', auth, admin, CategoryController.getAllCategories);
-router.get('/:id', auth, admin, CategoryController.getSingleCategory);
-router.post('/', auth, admin, CategoryController.createSingleCategory);
-router.patch('/:id', auth, admin, CategoryController.updateSingleCategory);
-router.delete('/:id', auth, admin, CategoryController.deleteSingleCategory);
+router.get('/v1', auth, admin, CategoryController.getAllCategories);
+router.get('/v1/:id', auth, admin, CategoryController.getSingleCategory);
+router.post('/v1', auth, admin, CategoryController.createSingleCategory);
+router.patch('/v1/:id', auth, admin, CategoryController.updateSingleCategory);
+router.delete('/v1/:id', auth, admin, CategoryController.deleteSingleCategory);
 
-router.get('/:categoryId/articles', auth, ArticleController.getArticlesInCategory);
+router.get('v1/:categoryId/articles', auth, ArticleController.getArticlesInCategory);
 
 module.exports = router;
