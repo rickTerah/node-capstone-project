@@ -2,7 +2,7 @@ const Joi = require('@hapi/joi');
 
 const validateArticlePost = (article) => {
   const schema = Joi.object().keys({
-    title: Joi.string().max(50).required(),
+    title: Joi.string().min(2).max(50).required(),
     article: Joi.string().max(2500).required(),
     categoryId: Joi.number().required(),
   });
