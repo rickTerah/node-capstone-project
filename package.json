@@ -7,7 +7,8 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "jest",
+    "test": "jest --forceExit --coverage --maxWorkers=1",
+    "coverage": "jest --forceExit --maxWorkers=1 --coverage --coverageReporters=text-lcov | coveralls",
     "start": "node server.js"
   },
   "repository": {
@@ -35,9 +36,12 @@
     "pg": "^7.12.1"
   },
   "devDependencies": {
+    "coveralls": "^3.0.7",
     "eslint": "^6.6.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.18.2",
-    "nodemon": "^1.19.4"
+    "jest": "^24.9.0",
+    "nodemon": "^1.19.4",
+    "supertest": "^4.0.2"
   }
 }
