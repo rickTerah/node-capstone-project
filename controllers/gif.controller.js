@@ -14,7 +14,7 @@ cloudinary.config({
 class GifController {
   static async postGif(req, res) {
     const file = req.files.image;
-    if (!file) return res.status(200).json({ message: 'Image is required' });
+    if (!file) return res.status(404).json({ message: 'Image is required' });
 
     const { title } = req.body;
     if (!title) return res.status(400).json({ message: 'title is required' });
