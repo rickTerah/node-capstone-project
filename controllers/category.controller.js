@@ -38,6 +38,16 @@ class CategoryContoller {
     }
 
     const { categoryName } = req.body;
+    const category = await db.query('SELECT * FROM categories WHERE categoryName=$1', [categoryName]);
+    if (category.rowCount > 0) {
+      return res.status(400).json({
+        status: 'error',
+        data: {
+          message: 'Category already exists',
+        },
+      });
+    }
+
     const categoryId = generateId(3532);
     await db.query(
       `INSERT INTO categories (categoryId, categoryName) 
