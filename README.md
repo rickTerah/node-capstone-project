@@ -6,8 +6,8 @@ Internal social network for employees of an organization
 #### users endpoints
 | Action| Endpoint | Functionality | 
 |----------|----------|---------------|
-| GET | `/users/v1/create-user`  | Admin register Employee|
-| POST | `/users/v1/signin`  | Login Employee|
+| GET | `/api/v1/auth/create-user`  | Admin register Employee|
+| POST | `/api/v1/auth/signin`  | Login Employee|
 
 User signup schema:
 ```json
@@ -37,10 +37,10 @@ Employee login schema:
 #### GIFs endpoints
 | Action| Endpoint | Functionality | 
 |----------|----------|---------------|
-| POST | `/gifs/v1/`  | Employee Post a GIF|
-| GET | `/gifs/v1/`  | Employee Get GIFs|
-| GET | `/gifs/v1/:gifId`  | Employee Get a single GIF|
-| POST | `/gifs/v1/:gifId/comment`  | Employee Post a comment to a GIF|
+| POST | `/api/v1/gifs/`  | Employee Post a GIF|
+| GET | `/api/v1/gifs/`  | Employee Get GIFs|
+| GET | `/api/v1/gifs/:gifId`  | Employee Get a single GIF|
+| POST | `/api/v1/gifs/:gifId/comment`  | Employee Post a comment to a GIF|
 
 Gif post schema:
 ```json
@@ -61,12 +61,12 @@ Gif comment schema:
 #### categories endpoints
 | Action| Endpoint | Functionality | 
 |----------|----------|---------------|
-| GET | `/categories/v1/`  | Admin get categories|
-| GET | `/categories/v1/:id`  | Admin get single category|
-| POST | `/categories/v1/`  | Admin create category|
-| PATCH | `/categories/v1/:id`  | Admin Edit category|
-| DELETE | `/categories/v1/:id`  | Admin delete category|
-| GET | `/categories/:categoryId/articles`  | Employee Get articles in a category|
+| GET | `/api/v1/categories/`  | Admin get categories|
+| GET | `/api/v1/categories/:id`  | Admin get single category|
+| POST | `/api/v1/categories/`  | Admin create category|
+| PATCH | `/api/v1/categories/:id`  | Admin Edit category|
+| DELETE | `/api/v1/categories/:id`  | Admin delete category|
+| GET | `/api/v1/categories/:categoryId/articles`  | Employee Get articles in a category|
 
 Category schema:
 ```json
@@ -79,12 +79,12 @@ Category schema:
 #### articles endpoints
 | Action| Endpoint | Functionality | 
 |----------|----------|---------------|
-| POST | `/articles/v1/`  | Employee Post an article|
-| GET | `/articles/v1/`  | Employee Get articles|
-| GET | `/articles/v1/:articleId`  | Employee Get a single article|
-| PATCH | `/articles/v1/:articleId`  | Employee Edit an article|
-| DELETE | `/articles/v1/:articleId`  | Employee Delete an article|
-| POST | `/articles/v1/articleId/comment`  | Employee Post an article comment|
+| POST | `/api/v1/articles/`  | Employee Post an article|
+| GET | `/api/v1/articles/`  | Employee Get articles|
+| GET | `/api/v1/articles/:articleId`  | Employee Get a single article|
+| PATCH | `/api/v1/articles/:articleId`  | Employee Edit an article|
+| DELETE | `/api/v1/articles/:articleId`  | Employee Delete an article|
+| POST | `/api/v1/articles/articleId/comment`  | Employee Post an article comment|
 
 Article schema:
 ```json
