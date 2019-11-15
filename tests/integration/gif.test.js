@@ -5,7 +5,7 @@ const db = require('../../models/db/index');
 let server;
 const token = jwt.sign({ userId: 1, isAdmin: true, email: 'patrick@gmail.com' }, 'jwtPrivateKey');
 
-describe('gifs/v1', () => {
+describe('api/v1/gifs', () => {
   beforeEach(() => {
     server = require('../../server');
   });
@@ -21,13 +21,13 @@ describe('gifs/v1', () => {
 
   describe('GET', () => {
     it('should return 401 if user is not logged in', async () => {
-      const res = await request(server).get('/gifs/v1');
+      const res = await request(server).get('/api/v1/gifs');
       expect(res.status).toBe(401);
     });
 
     it('should return 200 if user is authenticated', async () => {
       const res = await request(server)
-        .get('/gifs/v1')
+        .get('/api/v1/gifs')
         .set('token', token);
       expect(res.status).toBe(200);
     });
@@ -40,14 +40,14 @@ describe('gifs/v1', () => {
         VALUES (1, 'title', 'image url', '2019-11-6 18:0:42', 'something', 'patrick')`,
       );
       const res = await request(server)
-        .get(`/gifs/v1/${1}`)
+        .get(`/api/v1/gifs/${1}`)
         .set('token', token);
       expect(res.status).toBe(200);
     });
 
     it('should return 404 if a valid id is not passed', async () => {
       const res = await request(server)
-        .get(`/gifs/v1/${13}`)
+        .get(`/api/v1/gifs/${13}`)
         .set('token', token);
       expect(res.status).toBe(404);
     });
@@ -56,7 +56,7 @@ describe('gifs/v1', () => {
   describe('DELETE /:id', () => {
     it('should return a 404 if gif does not exist', async () => {
       const res = await request(server)
-        .delete(`/gifs/v1/${1}`)
+        .delete(`/api/v1/gifs/${1}`)
         .set('token', token);
       expect(res.status).toBe(404);
     });
@@ -68,7 +68,7 @@ describe('gifs/v1', () => {
       );
 
       const res = await request(server)
-        .delete(`/gifs/v1/${1}`)
+        .delete(`/api/v1/gifs/${1}`)
         .set('token', token);
       expect(res.status).toBe(403);
     });

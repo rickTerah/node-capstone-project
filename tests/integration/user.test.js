@@ -23,7 +23,7 @@ const userLogin = {
 const token = jwt.sign({ userId: 1, isAdmin: true, email: 'patrick@gmail.com' }, 'jwtPrivateKey');
 const notAdminToken = jwt.sign({ userId: 1, isAdmin: false, email: 'patrick@gmail.com' }, 'jwtPrivateKey');
 
-describe('auth/v1', () => {
+describe('api/v1/auth', () => {
   beforeEach(() => {
     server = require('../../server');
   });
@@ -40,14 +40,14 @@ describe('auth/v1', () => {
   describe('POST create-user/', () => {
     it('should return 401 if user is not logged in', async () => {
       const res = await request(server)
-        .post('/auth/v1/create-user')
+        .post('/api/v1/auth/create-user')
         .send(userRegister);
       expect(res.status).toBe(401);
     });
 
     it('should return 403 if user is not an admin', async () => {
       const res = await request(server)
-        .post('/auth/v1/create-user')
+        .post('/api/v1/auth/create-user')
         .set('token', notAdminToken)
         .send(userRegister);
       expect(res.status).toBe(403);
@@ -57,7 +57,7 @@ describe('auth/v1', () => {
     it('should return a 400 if user details are invalid', async () => {
       const user = { };
       const res = await request(server)
-        .post('/auth/v1/create-user')
+        .post('/api/v1/auth/create-user')
         .set('token', token)
         .send(user);
       expect(res.status).toBe(400);
@@ -73,7 +73,7 @@ describe('auth/v1', () => {
         [1, firstName, lastName, email, password, gender, jobRole, department, address, isAdmin],
       );
       const res = await request(server)
-        .post('/auth/v1/create-user')
+        .post('/api/v1/auth/create-user')
         .set('token', token)
         .send(userRegister);
       expect(res.status).toBe(400);
@@ -81,7 +81,7 @@ describe('auth/v1', () => {
 
     it('should return a 201 if registration is valid', async () => {
       const res = await request(server)
-        .post('/auth/v1/create-user')
+        .post('/api/v1/auth/create-user')
         .set('token', token)
         .send(userRegister);
       expect(res.status).toBe(201);
@@ -92,14 +92,14 @@ describe('auth/v1', () => {
     it('should return a 400 if user login details are invalid', async () => {
       const user = { };
       const res = await request(server)
-        .post('/auth/v1/signin')
+        .post('/api/v1/auth/signin')
         .send(user);
       expect(res.status).toBe(400);
     });
 
     it('should return a 400 if user does not exist', async () => {
       const res = await request(server)
-        .post('/auth/v1/signin')
+        .post('/api/v1/auth/signin')
         .send(userLogin);
       expect(res.status).toBe(400);
     });

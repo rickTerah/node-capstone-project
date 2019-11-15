@@ -5,7 +5,7 @@ const db = require('../../models/db/index');
 let server;
 const token = jwt.sign({ userId: 1, isAdmin: true, email: 'patrick@gmail.com' }, 'jwtPrivateKey');
 
-describe('articles/v1', () => {
+describe('api/v1/articles', () => {
   beforeEach(() => {
     server = require('../../server');
   });
@@ -22,13 +22,13 @@ describe('articles/v1', () => {
 
   describe('GET', () => {
     it('should return 401 if user is not logged in', async () => {
-      const res = await request(server).get('/articles/v1');
+      const res = await request(server).get('/api/v1/articles');
       expect(res.status).toBe(401);
     });
 
     it('should return 200 if user is authenticated', async () => {
       const res = await request(server)
-        .get('/articles/v1')
+        .get('/api/v1/articles')
         .set('token', token);
       expect(res.status).toBe(200);
     });
@@ -46,14 +46,14 @@ describe('articles/v1', () => {
           VALUES (1, 'title', 'article', '2019-11-6 18:0:42', 12, 'patrick')`,
       );
       const res = await request(server)
-        .get(`/articles/v1/${1}`)
+        .get(`/api/v1/articles/${1}`)
         .set('token', token);
       expect(res.status).toBe(200);
     });
 
     it('should return 404 if a valid id is not passed', async () => {
       const res = await request(server)
-        .get(`/articles/v1/${13}`)
+        .get(`/api/v1/articles/${13}`)
         .set('token', token);
       expect(res.status).toBe(404);
     });
@@ -69,7 +69,7 @@ describe('articles/v1', () => {
 
       const article = { title: 't', article: 'article', categoryId: 12 };
       const res = await request(server)
-        .post('/articles/v1')
+        .post('/api/v1/articles')
         .set('token', token)
         .send(article);
       expect(res.status).toBe(400);
@@ -82,7 +82,7 @@ describe('articles/v1', () => {
       );
       const article = { title: 'title', article: 'article', categoryId: 12 };
       const res = await request(server)
-        .post('/articles/v1')
+        .post('/api/v1/articles')
         .set('token', token)
         .send(article);
       expect(res.status).toBe(201);
@@ -102,7 +102,7 @@ describe('articles/v1', () => {
       );
       const article = { title: 't', article: 'article', categoryId: 2 };
       const res = await request(server)
-        .patch(`/articles/v1/${12}`)
+        .patch(`/api/v1/articles/${12}`)
         .set('token', token)
         .send(article);
       expect(res.status).toBe(400);
@@ -121,7 +121,7 @@ describe('articles/v1', () => {
 
       const article = { title: 'title', article: 'article' };
       const res = await request(server)
-        .patch(`/articles/v1/${1}`)
+        .patch(`/api/v1/articles/${1}`)
         .set('token', token)
         .send(article);
       expect(res.status).toBe(403);
@@ -130,7 +130,7 @@ describe('articles/v1', () => {
     it('should return a 404 if article does not exist', async () => {
       const article = { title: 'title', article: 'article' };
       const res = await request(server)
-        .patch(`/articles/v1/${2}`)
+        .patch(`/api/v1/articles/${2}`)
         .set('token', token)
         .send(article);
       expect(res.status).toBe(404);
@@ -156,7 +156,7 @@ describe('articles/v1', () => {
           VALUES (1, 'title', 'article', '2019-11-6 18:0:42', 12, 'patrick')`,
       );
       const res = await request(server)
-        .delete(`/articles/v1/${1}`)
+        .delete(`/api/v1/articles/${1}`)
         .set('token', token);
       expect(res.status).toBe(403);
     });

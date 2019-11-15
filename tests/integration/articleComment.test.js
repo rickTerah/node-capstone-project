@@ -5,7 +5,7 @@ const db = require('../../models/db/index');
 let server;
 const token = jwt.sign({ userId: 1, isAdmin: true, email: 'patrick@gmail.com' }, 'jwtPrivateKey');
 
-describe('articles/v1', () => {
+describe('api/v1/articles', () => {
   beforeEach(() => {
     server = require('../../server');
   });
@@ -24,7 +24,7 @@ describe('articles/v1', () => {
     it('should return a 400 if comment is invalid', async () => {
       const comment = { comment: '' };
       const res = await request(server)
-        .post('/articles/v1/2/comment')
+        .post('/api/v1/articles/2/comment')
         .set('token', token)
         .send(comment);
       expect(res.status).toBe(400);
@@ -38,7 +38,7 @@ describe('articles/v1', () => {
 
       const comment = { comment: 'comment comment' };
       const res = await request(server)
-        .post('/articles/v1/2/comment')
+        .post('/api/v1/articles/2/comment')
         .set('token', token)
         .send(comment);
       expect(res.status).toBe(404);
@@ -52,7 +52,7 @@ describe('articles/v1', () => {
 
       const comment = { comment: 'comment comment' };
       const res = await request(server)
-        .post('/articles/v1/1/comment')
+        .post('/api/v1/articles/1/comment')
         .set('token', token)
         .send(comment);
       expect(res.status).toBe(201);

@@ -5,7 +5,7 @@ const db = require('../../models/db/index');
 let server;
 const token = jwt.sign({ userId: 1, isAdmin: true, email: 'patrick@gmail.com' }, 'jwtPrivateKey');
 
-describe('categories/v1', () => {
+describe('api/v1/categories', () => {
   beforeEach(() => {
     server = require('../../server');
   });
@@ -21,13 +21,13 @@ describe('categories/v1', () => {
 
   describe('GET', () => {
     it('should return 401 if user is not logged in', async () => {
-      const res = await request(server).get('/categories/v1');
+      const res = await request(server).get('/api/v1/categories');
       expect(res.status).toBe(401);
     });
 
     it('should return 200 if user is authenticated', async () => {
       const res = await request(server)
-        .get('/categories/v1')
+        .get('/api/v1/categories')
         .set('token', token);
       expect(res.status).toBe(200);
     });
@@ -40,14 +40,14 @@ describe('categories/v1', () => {
             VALUES (12, 'first category')`,
       );
       const res = await request(server)
-        .get(`/categories/v1/${12}`)
+        .get(`/api/v1/categories/${12}`)
         .set('token', token);
       expect(res.status).toBe(200);
     });
 
     it('should return 404 if a valid id is not passed', async () => {
       const res = await request(server)
-        .get(`/categories/v1/${13}`)
+        .get(`/api/v1/categories/${13}`)
         .set('token', token);
       expect(res.status).toBe(404);
     });
@@ -57,7 +57,7 @@ describe('categories/v1', () => {
     it('should return a 400 if category name is less than 2 character', async () => {
       const category = { categoryId: 3, categoryName: 'a' };
       const res = await request(server)
-        .post('/categories/v1')
+        .post('/api/v1/categories')
         .set('token', token)
         .send(category);
       expect(res.status).toBe(400);
@@ -67,7 +67,7 @@ describe('categories/v1', () => {
       const name = new Array(60).join('a');
       const category = { categoryId: 3, categoryName: name };
       const res = await request(server)
-        .post('/categories/v1')
+        .post('/api/v1/categories')
         .set('token', token)
         .send(category);
       expect(res.status).toBe(400);
@@ -76,7 +76,7 @@ describe('categories/v1', () => {
     it('should return a 201 if category body is valid', async () => {
       const category = { categoryName: 'category' };
       const res = await request(server)
-        .post('/categories/v1')
+        .post('/api/v1/categories')
         .set('token', token)
         .send(category);
       expect(res.status).toBe(201);
@@ -92,7 +92,7 @@ describe('categories/v1', () => {
 
       const category = { categoryName: 'a' };
       const res = await request(server)
-        .patch(`/categories/v1/${12}`)
+        .patch(`/api/v1/categories/${12}`)
         .set('token', token)
         .send(category);
       expect(res.status).toBe(400);
@@ -106,7 +106,7 @@ describe('categories/v1', () => {
 
       const category = { categoryName: 'first' };
       const res = await request(server)
-        .patch(`/categories/v1/${12}`)
+        .patch(`/api/v1/categories/${12}`)
         .set('token', token)
         .send(category);
       expect(res.status).toBe(201);
@@ -115,7 +115,7 @@ describe('categories/v1', () => {
     it('should return a 404 if category does not exist', async () => {
       const category = { categoryName: 'first' };
       const res = await request(server)
-        .patch(`/categories/v1/${1}`)
+        .patch(`/api/v1/categories/${1}`)
         .set('token', token)
         .send(category);
       expect(res.status).toBe(404);
@@ -126,7 +126,7 @@ describe('categories/v1', () => {
     it('should return a 404 if category does not exist', async () => {
       const category = { categoryName: 'first' };
       const res = await request(server)
-        .delete(`/categories/v1/${1}`)
+        .delete(`/api/v1/categories/${1}`)
         .set('token', token)
         .send(category);
       expect(res.status).toBe(404);
@@ -139,7 +139,7 @@ describe('categories/v1', () => {
       );
       const category = { categoryName: 'first' };
       const res = await request(server)
-        .delete(`/categories/v1/${12}`)
+        .delete(`/api/v1/categories/${12}`)
         .set('token', token)
         .send(category);
       expect(res.status).toBe(202);
