@@ -1,4 +1,5 @@
 const request = require('supertest');
+const jwt = require('jsonwebtoken');
 const db = require('../../models/db/index');
 
 let server;
@@ -19,6 +20,9 @@ const userLogin = {
   password: '1234',
 };
 
+const token = jwt.sign({ userId: 1, isAdmin: true, email: 'patrick@gmail.com' }, 'jwtPrivateKey');
+const notAdminToken = jwt.sign({ userId: 1, isAdmin: false, email: 'patrick@gmail.com' }, 'jwtPrivateKey');
+
 describe('auth/v1', () => {
   beforeEach(() => {
     server = require('../../server');
@@ -34,10 +38,27 @@ describe('auth/v1', () => {
   });
 
   describe('POST create-user/', () => {
+    it('should return 401 if user is not logged in', async () => {
+      const res = await request(server)
+        .post('/auth/v1/create-user')
+        .send(userRegister);
+      expect(res.status).toBe(401);
+    });
+
+    it('should return 403 if user is not an admin', async () => {
+      const res = await request(server)
+        .post('/auth/v1/create-user')
+        .set('token', notAdminToken)
+        .send(userRegister);
+      expect(res.status).toBe(403);
+    });
+
+
     it('should return a 400 if user details are invalid', async () => {
       const user = { };
       const res = await request(server)
         .post('/auth/v1/create-user')
+        .set('token', token)
         .send(user);
       expect(res.status).toBe(400);
     });
@@ -53,6 +74,7 @@ describe('auth/v1', () => {
       );
       const res = await request(server)
         .post('/auth/v1/create-user')
+        .set('token', token)
         .send(userRegister);
       expect(res.status).toBe(400);
     });
@@ -60,6 +82,7 @@ describe('auth/v1', () => {
     it('should return a 201 if registration is valid', async () => {
       const res = await request(server)
         .post('/auth/v1/create-user')
+        .set('token', token)
         .send(userRegister);
       expect(res.status).toBe(201);
     });
